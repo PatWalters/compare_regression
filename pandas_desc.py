@@ -105,7 +105,7 @@ class PandasDescriptors:
 
 
 def main():
-    pd_desc = PandasDescriptors(['mhfp'])
+    pd_desc = PandasDescriptors(['morgan2'])
     input_df = pd.read_csv(sys.argv[1], sep=" ", header=None)
     input_df.columns = ["smiles", "rtx_number"]
     fp_df = pd_desc.from_dataframe(input_df, smiles_column='smiles', name_column='rtx_number')
