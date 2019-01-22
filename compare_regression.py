@@ -102,7 +102,7 @@ def compare_models(input_file_name):
 
 def main():
     out_list = []
-    for filename in glob("*.sdf"):
+    for filename in glob("data/*.sdf"):
         out_list += compare_models(filename)
     out_df = pd.DataFrame(out_list, columns=["Target", "Method", "Stat_Type", "Stat_LB", "Stat_Val", "Stat_UB"])
     out_df.to_csv("comparison.csv", index=False)

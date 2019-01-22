@@ -9,7 +9,6 @@ from rdkit.ML.Descriptors import MoleculeDescriptors
 from rdkit_utils import molecule_supplier_from_name
 import pandas as pd
 from sklearn import preprocessing
-from mhfp.encoder import MHFPEncoder
 
 
 class PandasDescriptors:
