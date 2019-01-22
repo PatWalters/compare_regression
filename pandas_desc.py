@@ -19,7 +19,6 @@ class PandasDescriptors:
         self.fp_dict = {}
         self.des_names = [name[0] for name in Descriptors._descList]
         des_calculator = MoleculeDescriptors.MolecularDescriptorCalculator(self.des_names)
-        self.fp_dict['mhfp'] = [lambda m: MHFPEncoder.secfp_from_mol(m, length=num_fp_bits), -1]
         self.fp_dict['descriptors'] = [lambda m: des_calculator.CalcDescriptors(m), -1]
         self.fp_dict['morgan2'] = [lambda m: rdmd.GetMorganFingerprintAsBitVect(m, 2, nBits=self.num_fp_bits),
                                    self.num_fp_bits]
