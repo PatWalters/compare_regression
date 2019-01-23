@@ -76,13 +76,13 @@ def read_data(sdf_name, suffix):
 
 
 def cv_models(df, base_name, splits, suffix):
+    out_list = []
     for cycle_num,[train_idx, test_idx] in enumerate(tqdm(splits, desc=suffix)):
         test_names = df.Name.iloc[test_idx]
         train_x, test_x, train_y, test_y = split_train_test(df, train_idx, test_idx, 1, "pIC50")
         estimator = xgb.XGBRegressor()
         estimator.fit(train_x, train_y)
         pred_y = estimator.predict(test_x)
-        out_list = []
         for name, expt, pred in zip(test_names, test_y, pred_y):
             out_list.append([suffix, base_name, cycle_num, name, expt, pred])
     return out_list
@@ -90,7 +90,7 @@ def cv_models(df, base_name, splits, suffix):
 
 def main():
     output_list = []
-    for file_name in sorted(glob.glob("A*.sdf")):
+    for file_name in sorted(glob.glob("A2a.sdf")):
         print(file_name)
         base_name, _ = os.path.splitext(file_name)
         df_desc = read_data(file_name, "desc")
