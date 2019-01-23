@@ -9,7 +9,11 @@ from rdkit.ML.Descriptors import MoleculeDescriptors
 from rdkit_utils import molecule_supplier_from_name
 import pandas as pd
 from sklearn import preprocessing
+from tqdm import tqdm
+import os
+from glob import glob
 
+#Routines for calculating descriptors and putting them into a Pandas dataframe
 
 class PandasDescriptors:
     def __init__(self, fp_type_list, num_fp_bits=1024):
@@ -80,12 +84,14 @@ class PandasDescriptors:
         df.insert(0, "Name", name_list)
         return df
 
-    def from_molecule_file(self, input_file_name, scale_data=False):
+    def from_molecule_file(self, input_file_name, scale_data=False, name_field=None):
+        if name_field is None:
+            name_field = "_Name"
         suppl = molecule_supplier_from_name(input_file_name)
         name_list = []
         fp_list = []
-        for idx, mol in enumerate(suppl):
-            name_list.append(mol.GetProp("_Name"))
+        for mol in tqdm(suppl):
+            name_list.append(mol.GetProp(name_field))
             fp = self.get_descriptors(mol)
             fp_list.append(fp)
         return self.dataframe_from_list(fp_list, name_list, scale_data)
@@ -105,12 +111,16 @@ class PandasDescriptors:
 
 
 def main():
-    pd_desc = PandasDescriptors(['morgan2'])
-    input_df = pd.read_csv(sys.argv[1], sep=" ", header=None)
-    input_df.columns = ["smiles", "rtx_number"]
-    fp_df = pd_desc.from_dataframe(input_df, smiles_column='smiles', name_column='rtx_number')
-    print(fp_df)
+    pd_desc = PandasDescriptors(['morgan2', 'descriptors'])
+    for file_name in glob("*.sdf"):
+        print(file_name)
+        base_name, _ = os.path.splitext(file_name)
+        outfile_name = base_name + "_desc.csv"
+        fp_df = pd_desc.from_molecule_file(file_name,name_field="ChEMBL_ID")
+        fp_df.to_csv(outfile_name,index=False)
 
 
 if __name__ == "__main__":
     main()
+
+
