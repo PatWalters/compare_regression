@@ -90,7 +90,7 @@ def cv_models(df, base_name, splits, suffix):
 
 def main():
     output_list = []
-    for file_name in sorted(glob.glob("A2a.sdf")):
+    for file_name in sorted(glob.glob("A*.sdf")):
         print(file_name)
         base_name, _ = os.path.splitext(file_name)
         df_desc = read_data(file_name, "desc")
@@ -102,7 +102,7 @@ def main():
         output_list += cv_models(df_desc, base_name, splits, "desc")
         output_list += cv_models(df_cddd, base_name, splits, "cddd")
     output_df = pd.DataFrame(output_list, columns=["Method", "Dataset", "CV_Cycle", "Name", "Truth", "Pred"])
-    output_df.to_csv("ml_result.csv", index=False)
+    output_df.to_csv("xgboost_result.csv", index=False)
 
 
 
