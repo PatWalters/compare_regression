@@ -7,6 +7,7 @@ from __future__ import print_function
 import numpy as np
 from sklearn.utils import resample
 
+
 def bootstrap_error_estimate(pred, truth, method, method_name="", alpha=0.95, sample_frac=0.5, iterations=1000):
     """
     Generate a bootstrapped estimate of confidence intervals

@@ -79,7 +79,7 @@ def cv_models(df, base_name, splits, suffix):
     out_list = []
     for cycle_num,[train_idx, test_idx] in enumerate(tqdm(splits, desc=suffix)):
         test_names = df.Name.iloc[test_idx]
-        train_x, test_x, train_y, test_y = split_train_test(df, train_idx, test_idx, 1, "pIC50")
+        train_x, test_x, train_y, test_y = split_train_test(df, train_idx, test_idx, 2, "pIC50")
         estimator = xgb.XGBRegressor()
         estimator.fit(train_x, train_y)
         pred_y = estimator.predict(test_x)
